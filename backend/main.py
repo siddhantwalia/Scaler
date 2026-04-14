@@ -1,6 +1,6 @@
 from app.db.database import engine, Base
 from app.models import product, cart, order, wishlist
-from app.routers import products, cart
+from app.routers import products, cart, orders
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -17,6 +17,7 @@ Base.metadata.create_all(bind=engine)
 # Include routers
 app.include_router(products.router, prefix="/api")  # Product Page Router
 app.include_router(cart.router, prefix="/api")      # Cart Page Router
+app.include_router(orders.router, prefix="/api")    # Order Page Router
 
 @app.get("/")
 def read_root():
