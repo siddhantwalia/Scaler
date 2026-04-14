@@ -5,11 +5,13 @@ from app.db.database import get_db
 from app.models.product import Product
 from app.schemas.product import ProductOut
 
+# Router for product operations
 router = APIRouter(
     prefix="/products",
     tags=["products"]
 )
 
+# Get all products
 @router.get("/", response_model=List[ProductOut])
 def get_products(category: Optional[str] = None, db: Session = Depends(get_db)):
     query = db.query(Product)
@@ -17,6 +19,8 @@ def get_products(category: Optional[str] = None, db: Session = Depends(get_db)):
         query = query.filter(Product.category == category)
     return query.all()
 
+
+# Get a specific product
 @router.get("/{product_id}", response_model=ProductOut)
 def get_product(product_id: int, db: Session = Depends(get_db)):
     product = db.query(Product).filter(Product.id == product_id).first()

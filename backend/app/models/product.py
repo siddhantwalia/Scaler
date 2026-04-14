@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, Float, ForeignKey, JSON
 from app.db.database import Base
 from sqlalchemy.orm import relationship
 
+# Products available in the store
 class Product(Base):
     __tablename__ = "products"
 
@@ -19,6 +20,7 @@ class Product(Base):
     
     images = relationship("ProductImage", back_populates="product", cascade="all, delete-orphan")
 
+# Images of the product
 class ProductImage(Base):
     __tablename__ = "product_images"
 

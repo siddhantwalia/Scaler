@@ -1,12 +1,14 @@
 from pydantic import BaseModel, ConfigDict
 from typing import List, Optional
 
+# Base schema for product images
 class ProductImageBase(BaseModel):
     id: int
     image_url: str
     
     model_config = ConfigDict(from_attributes=True)
 
+# Base schema for products
 class ProductBase(BaseModel):
     name: str
     description: Optional[str] = None
@@ -19,9 +21,7 @@ class ProductBase(BaseModel):
     reviews_count: Optional[int] = 0
     highlights: Optional[List[str]] = None
 
-class ProductCreate(ProductBase):
-    pass
-
+# Schema for products
 class ProductOut(ProductBase):
     id: int
     images: List[ProductImageBase] = []

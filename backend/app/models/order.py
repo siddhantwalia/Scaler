@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship
 from app.db.database import Base
 from datetime import datetime
 
+# Orders placed by the user
 class Order(Base):
     __tablename__ = "orders"
 
@@ -15,6 +16,7 @@ class Order(Base):
 
     items = relationship("OrderItem", back_populates="order")
 
+# Items present in the order
 class OrderItem(Base):
     __tablename__ = "order_items"
 
@@ -25,4 +27,4 @@ class OrderItem(Base):
     price = Column(Float, nullable=False)
 
     order = relationship("Order", back_populates="items")
-    product = relationship("Product")
+    product = relationship("Product")
