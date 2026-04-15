@@ -63,12 +63,13 @@ const Navbar = () => {
                 </span>
               )}
             </Link>
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="sm:hidden p-2 hover:bg-nav-secondary rounded-sm transition-colors"
+            <Link
+              to="/orders"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-sm text-sm font-medium hover:bg-nav-secondary transition-colors"
             >
-              <Menu className="h-5 w-5" />
-            </button>
+              <User className="h-4 w-4" />
+              <span className="hidden md:inline">Orders</span>
+            </Link>
           </div>
         </div>
 

@@ -1,7 +1,7 @@
 import { useLocation, Link, Navigate } from "react-router-dom";
 import { CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { CartItem } from "@/context/CartContext";
+import { CartItem } from "@/api/api";
 
 interface OrderState {
   orderId: string;

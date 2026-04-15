@@ -10,6 +10,7 @@ import ProductDetail from "./pages/ProductDetail";
 import CartPage from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import OrderConfirmation from "./pages/OrderConfirmation";
+import OrdersPage from "./pages/OrdersPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +31,7 @@ const App = () => (
                 <Route path="/checkout" element={<CheckoutPage />} />
                 <Route path="/order-confirmation" element={<OrderConfirmation />} />
                 <Route path="*" element={<NotFound />} />
+                <Route path="/orders" element={<OrdersPage />} />
               </Routes>
             </div>
             <Footer />
