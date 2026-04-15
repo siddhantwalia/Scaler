@@ -32,13 +32,26 @@ const ProductDetail = () => {
   }, [product]);
 
   // Handlers
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     addToCart(product);
     toast.success("Added to cart!");
+
+    try {
+      await api.removeFromWishlist(product.id);
+      setWishlisted(false);
+      window.dispatchEvent(new Event("wishlistUpdated"));
+    } catch { }
   };
 
-  const handleBuyNow = () => {
+  const handleBuyNow = async () => {
     addToCart(product);
+
+    try {
+      await api.removeFromWishlist(product.id);
+      setWishlisted(false);
+      window.dispatchEvent(new Event("wishlistUpdated"));
+    } catch { }
+
     navigate("/cart");
   };
 
