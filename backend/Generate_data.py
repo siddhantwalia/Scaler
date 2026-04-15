@@ -137,10 +137,10 @@ def seed_db():
         "stock": 200,
         "rating": 4.1,
         "reviews_count": 234567,
-        "highlights": ["Bluetooth 5.1", "IPX4"],
+        "highlights": ["Bluetooth 5.1", "IPX4", "ASAP Charge"],
         "images": [
-            "https://source.unsplash.com/400x400/?earbuds",
-            "https://source.unsplash.com/400x400/?wireless-earbuds"
+            "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400",
+            "https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=400"
         ]
     },
     {
@@ -150,13 +150,13 @@ def seed_db():
         "original_price": 499,
         "discount_percentage": 40,
         "category": "Beauty",
-        "stock": 100,
+        "stock": 0,
         "rating": 4.2,
         "reviews_count": 3200,
-        "highlights": ["Moisturizing", "Daily Use"],
+        "highlights": ["Moisturizing", "Daily Use", "SPF 20"],
         "images": [
-            "https://source.unsplash.com/400x400/?cosmetics",
-            "https://source.unsplash.com/400x400/?face-cream"
+            "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400",
+            "https://images.unsplash.com/photo-1612817288484-6f916006741a?w=400"
         ]
     },
     {
@@ -169,10 +169,9 @@ def seed_db():
         "stock": 200,
         "rating": 4.3,
         "reviews_count": 5400,
-        "highlights": ["Organic", "Premium Quality"],
+        "highlights": ["Organic", "Premium Quality", "Long Grain"],
         "images": [
-            "https://source.unsplash.com/400x400/?rice",
-            "https://source.unsplash.com/400x400/?grains"
+            "https://images.unsplash.com/photo-1586201327693-d646ab051fba?w=400"
         ]
     },
     {
@@ -185,10 +184,9 @@ def seed_db():
         "stock": 80,
         "rating": 4.8,
         "reviews_count": 12000,
-        "highlights": ["Bestseller", "Self Help"],
+        "highlights": ["Bestseller", "Self Help", "Practical Advice"],
         "images": [
-            "https://upload.wikimedia.org/wikipedia/en/2/28/Atomic_Habits_book_cover.jpg"
-            # "https://source.unsplash.com/400x400/?reading"
+            "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400"
         ]
     },
     {
@@ -201,10 +199,9 @@ def seed_db():
         "stock": 60,
         "rating": 4.4,
         "reviews_count": 2100,
-        "highlights": ["LED", "Decorative"],
+        "highlights": ["LED", "Decorative", "Energy Efficient"],
         "images": [
-            "https://source.unsplash.com/400x400/?lamp",
-            "https://source.unsplash.com/400x400/?home-decor"
+            "https://images.unsplash.com/photo-1507473885765-e6ed657f9971?w=400"
         ]
     },
 
