@@ -15,72 +15,200 @@ def seed_db():
     db.query(Product).delete()
     
     products = [
-        {
-            "name": "Apple iPhone 15 (Blue, 128 GB)",
-            "description": "128 GB ROM | 15.49 cm (6.1 inch) Super Retina XDR Display | 48MP + 12MP | 12MP Front Camera | A16 Bionic Chip, 6 Core Processor",
-            "price": 65999.0,
-            "original_price": 79900.0,
-            "discount_percentage": 17,
-            "category": "Electronics",
-            "stock": 50,
-            "rating": 4.6,
-            "reviews_count": 12450,
-            "highlights": ["128 GB ROM", "Super Retina XDR Display", "A16 Bionic Chip"],
-            "images": ["https://rukminim2.flixcart.com/image/832/832/xif0q/mobile/k/l/l/-original-imagtc56ftzfywak.jpeg"]
-        },
-        {
-            "name": "SAMSUNG Galaxy S23 FE (Mint, 128 GB)",
-            "description": "8 GB RAM | 128 GB ROM | 16.26 cm (6.4 inch) Full HD+ Display | 50MP + 12MP | 10MP Front Camera | 4500 mAh Lithium-ion Battery",
-            "price": 39999.0,
-            "original_price": 59999.0,
-            "discount_percentage": 33,
-            "category": "Electronics",
-            "stock": 30,
-            "rating": 4.3,
-            "reviews_count": 8900,
-            "highlights": ["8 GB RAM", "50MP Triple Camera", "Exynos 2200"],
-            "images": ["https://rukminim2.flixcart.com/image/832/832/xif0q/mobile/a/o/f/-original-imagytv2rvstz76v.jpeg"]
-        },
-        {
-            "name": "Nike Air Max Solo Sneakers",
-            "description": "A pair of white and black sneakers, has regular styling, lace-up detail. Synthetic upper. Cushioned footbed. Textured and patterned outsole.",
-            "price": 8295.0,
-            "original_price": 9295.0,
-            "discount_percentage": 10,
-            "category": "Fashion",
-            "stock": 100,
-            "rating": 4.5,
-            "reviews_count": 450,
-            "highlights": ["Synthetic Upper", "Cushioned Footbed", "Rubber Outsole"],
-            "images": ["https://rukminim2.flixcart.com/image/832/832/xif0q/shoe/r/j/e/-original-imagzhzhzrgmzhzh.jpeg"]
-        },
-        {
-            "name": "Sony WH-1000XM5 Bluetooth Headset",
-            "description": "With Mic | Industry Leading Noise Cancellation | 30Hrs Battery Life | Quick Charge | Multi Point Connection",
-            "price": 29990.0,
-            "original_price": 34990.0,
-            "discount_percentage": 14,
-            "category": "Electronics",
-            "stock": 25,
-            "rating": 4.7,
-            "reviews_count": 2100,
-            "highlights": ["30 Hours Battery", "Noise Cancellation", "Dual Processor"],
-            "images": ["https://rukminim2.flixcart.com/image/832/832/xif0q/headphone/d/z/n/-original-imaghv99mzhzhzhz.jpeg"]
-        },
-        {
-            "name": "LG 7 kg 5 Star Inverter Fully Automatic Front Load",
-            "description": "6 Motion Direct Drive | Steam | Heater | Inverter Direct Drive | Touch Control | 5 Star Rating",
-            "price": 28990.0,
-            "original_price": 35990.0,
-            "discount_percentage": 19,
-            "category": "Appliances",
-            "stock": 15,
-            "rating": 4.4,
-            "reviews_count": 1200,
-            "highlights": ["7 kg Capacity", "Fully Automatic", "Front Load"],
-            "images": ["https://rukminim2.flixcart.com/image/832/832/xif0q/washing-machine-new/m/j/e/-original-imagzhzhzrgmzhzh.jpeg"]
-        }
-    ]
+    {
+        "name": "Samsung Galaxy S24 Ultra 5G (Titanium Black, 256 GB)",
+        "description": "6.8 inch AMOLED, Snapdragon 8 Gen 3, 200MP Camera",
+        "price": 129999,
+        "original_price": 144999,
+        "discount_percentage": 10,
+        "category": "Mobiles",
+        "stock": 20,
+        "rating": 4.5,
+        "reviews_count": 12453,
+        "highlights": ["200MP Camera", "Snapdragon 8 Gen 3"],
+        "images": [
+            "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=400",
+            "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400",
+            "https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=400"
+        ]
+    },
+    {
+        "name": "Apple MacBook Air M3 (16GB RAM)",
+        "description": "Lightweight laptop with Apple M3 chip",
+        "price": 114990,
+        "original_price": 119900,
+        "discount_percentage": 4,
+        "category": "Electronics",
+        "stock": 15,
+        "rating": 4.7,
+        "reviews_count": 3421,
+        "highlights": ["M3 Chip", "18h Battery"],
+        "images": [
+            "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400",
+            "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400"
+        ]
+    },
+    {
+        "name": "Sony WH-1000XM5 Headphones",
+        "description": "Industry leading noise cancellation",
+        "price": 24990,
+        "original_price": 34990,
+        "discount_percentage": 29,
+        "category": "Electronics",
+        "stock": 30,
+        "rating": 4.6,
+        "reviews_count": 8932,
+        "highlights": ["Noise Cancelling", "30h Battery"],
+        "images": [
+            "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400",
+            "https://images.unsplash.com/photo-1484704849700-f032a568e944?w=400"
+        ]
+    },
+    {
+        "name": "Nike Air Max Running Shoes",
+        "description": "Comfortable running shoes",
+        "price": 8995,
+        "original_price": 14995,
+        "discount_percentage": 40,
+        "category": "Fashion",
+        "stock": 100,
+        "rating": 4.3,
+        "reviews_count": 5621,
+        "highlights": ["Lightweight", "Breathable"],
+        "images": [
+            "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+            "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400"
+        ]
+    },
+    {
+        "name": "Wooden Study Table",
+        "description": "Modern study table with storage",
+        "price": 5999,
+        "original_price": 12999,
+        "discount_percentage": 54,
+        "category": "Home & Furniture",
+        "stock": 40,
+        "rating": 4.1,
+        "reviews_count": 2341,
+        "highlights": ["Wood Finish", "Compact"],
+        "images": [
+            "https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?w=400",
+            "https://images.unsplash.com/photo-1611269154421-4e27233ac5c7?w=400"
+        ]
+    },
+    {
+        "name": "Samsung Double Door Refrigerator",
+        "description": "253L Frost Free Refrigerator",
+        "price": 24990,
+        "original_price": 30990,
+        "discount_percentage": 19,
+        "category": "Appliances",
+        "stock": 10,
+        "rating": 4.4,
+        "reviews_count": 7654,
+        "highlights": ["Frost Free", "Digital Inverter"],
+        "images": [
+            "https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?w=400"
+        ]
+    },
+    {
+        "name": "iPhone 15 Pro Max",
+        "description": "A17 Pro chip, titanium design",
+        "price": 159900,
+        "original_price": 159900,
+        "discount_percentage": 0,
+        "category": "Mobiles",
+        "stock": 25,
+        "rating": 4.6,
+        "reviews_count": 9821,
+        "highlights": ["A17 Pro", "Titanium Build"],
+        "images": [
+            "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=400",
+            "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=400"
+        ]
+    },
+    {
+        "name": "boAt Airdopes 141 Earbuds",
+        "description": "Wireless earbuds with 42h playtime",
+        "price": 1099,
+        "original_price": 4490,
+        "discount_percentage": 76,
+        "category": "Electronics",
+        "stock": 200,
+        "rating": 4.1,
+        "reviews_count": 234567,
+        "highlights": ["Bluetooth 5.1", "IPX4"],
+        "images": [
+            "https://source.unsplash.com/400x400/?earbuds",
+            "https://source.unsplash.com/400x400/?wireless-earbuds"
+        ]
+    },
+    {
+        "name": "Lakme Face Cream",
+        "description": "Hydrating daily face cream",
+        "price": 299,
+        "original_price": 499,
+        "discount_percentage": 40,
+        "category": "Beauty",
+        "stock": 100,
+        "rating": 4.2,
+        "reviews_count": 3200,
+        "highlights": ["Moisturizing", "Daily Use"],
+        "images": [
+            "https://source.unsplash.com/400x400/?cosmetics",
+            "https://source.unsplash.com/400x400/?face-cream"
+        ]
+    },
+    {
+        "name": "Organic Basmati Rice (5kg)",
+        "description": "Premium long grain rice",
+        "price": 899,
+        "original_price": 1299,
+        "discount_percentage": 30,
+        "category": "Grocery",
+        "stock": 200,
+        "rating": 4.3,
+        "reviews_count": 5400,
+        "highlights": ["Organic", "Premium Quality"],
+        "images": [
+            "https://source.unsplash.com/400x400/?rice",
+            "https://source.unsplash.com/400x400/?grains"
+        ]
+    },
+    {
+        "name": "Atomic Habits by James Clear",
+        "description": "Self improvement bestseller",
+        "price": 499,
+        "original_price": 699,
+        "discount_percentage": 28,
+        "category": "Books",
+        "stock": 80,
+        "rating": 4.8,
+        "reviews_count": 12000,
+        "highlights": ["Bestseller", "Self Help"],
+        "images": [
+            "https://upload.wikimedia.org/wikipedia/en/2/28/Atomic_Habits_book_cover.jpg"
+            # "https://source.unsplash.com/400x400/?reading"
+        ]
+    },
+    {
+        "name": "Decorative LED Lamp",
+        "description": "Modern home decor lamp",
+        "price": 1499,
+        "original_price": 2499,
+        "discount_percentage": 40,
+        "category": "Home",
+        "stock": 60,
+        "rating": 4.4,
+        "reviews_count": 2100,
+        "highlights": ["LED", "Decorative"],
+        "images": [
+            "https://source.unsplash.com/400x400/?lamp",
+            "https://source.unsplash.com/400x400/?home-decor"
+        ]
+    },
+
+]
     
     for p_data in products:
         images = p_data.pop("images")

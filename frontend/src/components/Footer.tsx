@@ -40,7 +40,7 @@ const Footer = () => (
         </div>
       </div>
       <div className="border-t border-primary-foreground/10 mt-6 pt-4 text-center text-xs text-primary-foreground/50">
-        © 2026 Flipkart Clone. Built with Lovable.
+        © 2026 Flipkart Clone.
       </div>
     </div>
   </footer>

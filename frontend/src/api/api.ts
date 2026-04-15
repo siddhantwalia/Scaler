@@ -128,8 +128,17 @@ export const api = {
 
     async getOrders(): Promise<any[]> {
         const res = await fetch(`${API_BASE_URL}/orders/`);
-        if (!res.ok) throw new Error('Failed to fetch orders');
-        return await res.json();
+        if (!res.ok) throw new Error("Failed to fetch orders");
+
+        const data = await res.json();
+
+        return data.map((order: any) => ({
+            ...order,
+            items: order.items.map((item: any) => ({
+                ...item,
+                product: mapProduct(item.product),
+            })),
+        }));
     },
     async getWishlist() {
         const res = await fetch(`${API_BASE_URL}/wishlist/`);
