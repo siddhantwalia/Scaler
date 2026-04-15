@@ -13,10 +13,19 @@ router = APIRouter(
 
 # Get all products
 @router.get("/", response_model=List[ProductOut])
-def get_products(category: Optional[str] = None, db: Session = Depends(get_db)):
+def get_products(
+    category: Optional[str] = None, 
+    search: Optional[str] = None, 
+    db: Session = Depends(get_db)
+):
     query = db.query(Product)
+    
     if category:
         query = query.filter(Product.category == category)
+        
+    if search:
+        query = query.filter(Product.name.ilike(f"%{search}%"))
+        
     return query.all()
 
 
