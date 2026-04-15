@@ -1,6 +1,7 @@
 import { useMemo, useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { products } from "@/data/products";
+import { useQuery } from "@tanstack/react-query";
+import { api } from "@/api/api";
 import ProductCard from "@/components/ProductCard";
 import ProductCardSkeleton from "@/components/ProductCardSkeleton";
 import CategoryBar from "@/components/CategoryBar";
@@ -9,21 +10,13 @@ const Index = () => {
   const [searchParams] = useSearchParams();
   const category = searchParams.get("category") || "All";
   const searchQuery = searchParams.get("search") || "";
-  const [loading, setLoading] = useState(true);
+  
+  const { data: products = [], isLoading: loading } = useQuery({
+    queryKey: ["products", category, searchQuery],
+    queryFn: () => api.getProducts(category, searchQuery),
+  });
 
-  useEffect(() => {
-    setLoading(true);
-    const t = setTimeout(() => setLoading(false), 600);
-    return () => clearTimeout(t);
-  }, [category, searchQuery]);
-
-  const filtered = useMemo(() => {
-    return products.filter((p) => {
-      const matchCategory = category === "All" || p.category === category;
-      const matchSearch = !searchQuery || p.name.toLowerCase().includes(searchQuery.toLowerCase());
-      return matchCategory && matchSearch;
-    });
-  }, [category, searchQuery]);
+  const filtered = products; // Already filtered by backend
 
   return (
     <>

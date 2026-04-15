@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Product } from "@/data/products";
+import { Product } from "@/api/api";
 import StarRating from "./StarRating";
 
 interface ProductCardProps {

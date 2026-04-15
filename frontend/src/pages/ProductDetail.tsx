@@ -1,11 +1,13 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { products } from "@/data/products";
+import { useQuery } from "@tanstack/react-query";
+import { api } from "@/api/api";
 import { useCart } from "@/context/CartContext";
 import StarRating from "@/components/StarRating";
 import { ShoppingCart, Zap, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import ProductCardSkeleton from "@/components/ProductCardSkeleton";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -13,12 +15,35 @@ const ProductDetail = () => {
   const { addToCart } = useCart();
   const [imageIndex, setImageIndex] = useState(0);
 
-  const product = products.find((p) => p.id === Number(id));
+  const { data: product, isLoading, isError } = useQuery({
+    queryKey: ["product", id],
+    queryFn: () => api.getProductById(Number(id)),
+    enabled: !!id,
+  });
 
-  if (!product) {
+  if (isLoading) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="grid md:grid-cols-2 gap-8 bg-card p-4 md:p-8 rounded-sm shadow-sm animate-pulse">
+            <div className="aspect-square bg-muted rounded-sm"></div>
+            <div className="space-y-4">
+                <div className="h-8 bg-muted rounded w-3/4"></div>
+                <div className="h-4 bg-muted rounded w-1/4"></div>
+                <div className="h-10 bg-muted rounded w-1/2"></div>
+                <div className="h-20 bg-muted rounded w-full"></div>
+            </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (isError || !product) {
     return (
       <div className="container mx-auto px-4 py-20 text-center">
         <p className="text-lg text-muted-foreground">Product not found.</p>
+        <Button variant="link" onClick={() => navigate("/")} className="mt-4">
+          Back to Home
+        </Button>
       </div>
     );
   }
