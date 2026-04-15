@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { api } from "@/api/api";
 import { useCart } from "@/context/CartContext";
 import StarRating from "@/components/StarRating";
-import { ShoppingCart, Zap, ChevronLeft, ChevronRight, Heart, Star } from "lucide-react";
+import { ShoppingCart, Zap, ChevronLeft, ChevronRight, Heart, Star, Camera, Cpu, Smartphone, ShieldCheck, Tag, Layout, BookOpen, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
@@ -132,11 +132,11 @@ const ProductDetail = () => {
             </div>
 
             <div className="flex-1 w-full space-y-4">
-              <div className="relative aspect-[4/3] bg-white border border-border/50 rounded-sm flex items-center justify-center overflow-hidden p-4 group shadow-sm">
+              <div className="relative aspect-[4/3] w-full bg-white border border-border/50 rounded-sm flex items-center justify-center overflow-hidden p-4 group shadow-sm">
                 <img
                   src={product.images[imageIndex]}
                   alt={product.name}
-                  className="max-w-[400px] w-full object-contain group-hover:scale-105 transition-transform duration-500"
+                  className="h-full w-full object-contain group-hover:scale-105 transition-transform duration-500"
                 />
 
                 <button
@@ -257,7 +257,7 @@ const ProductDetail = () => {
                 "Partner Offer Sign up for Flipkart Pay Later and get Flipkart Gift Card worth up to ₹500*"
               ].map((offer, i) => (
                 <div key={i} className="flex items-start gap-2 text-sm text-[#212121]">
-                  <img src="https://static-assets-web.flixcart.com/batman-returns/batman-returns/p/images/offers-a1d2bb.svg" className="h-4 w-4 mt-1" alt="offer" />
+                  <Tag className="h-4 w-4 mt-1 text-success shrink-0" />
                   <span>
                     <span className="font-bold">{offer.split(' ')[0]} {offer.split(' ')[1]}</span>
                     {offer.substring(offer.indexOf(offer.split(' ')[1]) + offer.split(' ')[1].length)}
@@ -267,13 +267,38 @@ const ProductDetail = () => {
               ))}
             </div>
 
-            {/* Simplified Highlights */}
-            <div className="flex gap-10">
-              <span className="text-sm font-bold text-muted-foreground w-24 shrink-0 mt-1">Highlights</span>
-              <ul className="list-disc pl-5 space-y-1 text-sm text-[#212121]">
-                <li className="leading-relaxed">{product.description}</li>
-                <li className="leading-relaxed">1 Year Manufacturer Warranty</li>
-              </ul>
+            {/* Product Highlights Section */}
+            <div className="space-y-4 pt-4">
+              <h3 className="text-base font-bold text-[#212121] flex items-center justify-between group cursor-pointer">
+                Product highlights
+                <ChevronLeft className="h-5 w-5 -rotate-90 text-muted-foreground group-hover:text-foreground transition-colors" />
+              </h3>
+              <div className="space-y-4">
+                {product.highlights.map((highlight: string, idx: number) => {
+                  const getIcon = (text: string) => {
+                    const lower = text.toLowerCase();
+                    if (lower.includes("ram") || lower.includes("rom") || lower.includes("storage")) return <Cpu className="h-5 w-5" />;
+                    if (lower.includes("display") || lower.includes("inch") || lower.includes("screen")) return <Smartphone className="h-5 w-5" />;
+                    if (lower.includes("camera") || lower.includes("mp")) return <Camera className="h-5 w-5" />;
+                    if (lower.includes("battery") || lower.includes("mah") || lower.includes("playtime")) return <Zap className="h-5 w-5" />;
+                    if (lower.includes("processor") || lower.includes("chip") || lower.includes("snapdragon")) return <Cpu className="h-5 w-5" />;
+                    if (lower.includes("warranty")) return <ShieldCheck className="h-5 w-5" />;
+                    if (lower.includes("wood") || lower.includes("finish") || lower.includes("design") || lower.includes("sturdy")) return <Layout className="h-5 w-5" />;
+                    if (lower.includes("book") || lower.includes("author") || lower.includes("bestseller")) return <BookOpen className="h-5 w-5" />;
+                    if (lower.includes("piece") || lower.includes("lego") || lower.includes("kit")) return <Layers className="h-5 w-5" />;
+                    return <Star className="h-5 w-5" />;
+                  };
+
+                  return (
+                    <div key={idx} className="flex items-center gap-4 text-[#212121]">
+                      <div className="p-2 bg-[#f0f5ff] text-[#2874f0] rounded-sm">
+                        {getIcon(highlight)}
+                      </div>
+                      <span className="text-sm font-medium">{highlight}</span>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
 
             {/* Seller */}
@@ -293,7 +318,7 @@ const ProductDetail = () => {
             <div className="mt-8 border border-border/80 rounded shadow-sm overflow-hidden bg-white">
               <div className="bg-muted/20 px-6 py-4 text-lg font-bold border-b border-border/80 text-[#212121]">Specifications</div>
               <div className="divide-y divide-border/40">
-                {Object.entries(product.specs).map(([key, value]) => (
+                {Object.entries(product.specs || {}).map(([key, value]) => (
                   <div key={key} className="flex text-sm">
                     <span className="w-1/3 px-6 py-4 text-muted-foreground">
                       {key}

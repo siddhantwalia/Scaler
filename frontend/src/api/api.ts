@@ -11,6 +11,7 @@ export interface Product {
     category: string;
     images: string[];
     description: string;
+    highlights: string[];
     specs: Record<string, string>;
     inStock: boolean;
     stock: number;
@@ -40,7 +41,8 @@ const mapProduct = (p: any): Product => ({
     category: p.category || 'Uncategorized',
     images: p.images?.map((img: any) => img.image_url) || [],
     description: p.description || '',
-    specs: p.highlights ? { "Highlights": p.highlights.join(", ") } : {},
+    highlights: p.highlights || [],
+    specs: p.specs || {},
     inStock: p.stock > 0,
     stock: p.stock || 0
 });

@@ -17,6 +17,7 @@ class Product(Base):
     rating = Column(Float, default=0.0)
     reviews_count = Column(Integer, default=0)
     highlights = Column(JSON, nullable=True)
+    specs = Column(JSON, nullable=True)
     
     images = relationship("ProductImage", back_populates="product", cascade="all, delete-orphan")
 

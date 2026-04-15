@@ -114,7 +114,7 @@ const WishlistPage = () => {
                   </div>
                   <span className="text-xs text-muted-foreground font-semibold">({product.ratingCount.toLocaleString()})</span>
                   <img
-                    src="https://static-assets-web.flixcart.com/batman-returns/batman-returns/p/images/fa_6296a1.png"
+                    src="https://static-assets-web.flixcart.com/fk-p-linchpin-web/fk-cp-zion/img/fa_62673a.png"
                     alt="fassured"
                     className="h-3.5 w-auto object-contain"
                   />

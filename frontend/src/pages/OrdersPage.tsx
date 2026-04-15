@@ -22,6 +22,7 @@ const statusColor: Record<string, string> = {
   Delivered: "text-green-600",
   Shipped: "text-primary",
   Processing: "text-yellow-600",
+  "Order Placed": "text-green-600",
   Cancelled: "text-destructive",
 };
 
@@ -29,6 +30,7 @@ const statusDot: Record<string, string> = {
   Delivered: "bg-green-600",
   Shipped: "bg-primary",
   Processing: "bg-yellow-600",
+  "Order Placed": "bg-green-600",
   Cancelled: "bg-destructive",
 };
 
@@ -37,15 +39,24 @@ const OrdersPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  const fetchOrders = () => {
     api.getOrders()
       .then((data) => {
         setOrders(data);
+        
+        // Selective Sync: If any order is still 'Processing', check again in 5 seconds
+        if (data.some((order: Order) => order.status === "Processing")) {
+          setTimeout(fetchOrders, 5000);
+        }
       })
       .catch((err) => {
         console.error("Failed to fetch orders", err);
       })
       .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    fetchOrders();
   }, []);
 
   const filteredOrders = orders.filter((order) =>

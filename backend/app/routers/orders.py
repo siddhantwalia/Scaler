@@ -1,7 +1,8 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
 from sqlalchemy.orm import Session
 from typing import List
-from app.db.database import get_db
+import time
+from app.db.database import get_db, SessionLocal
 from app.models.order import Order, OrderItem
 from app.models.cart import CartItem
 from app.schemas.order import OrderCreate, OrderOut
@@ -13,8 +14,20 @@ router = APIRouter(
 
 DEFAULT_USER_ID = 1
 
+def update_order_status_task(order_id: int):
+    # Wait for 4 seconds
+    time.sleep(4)
+    db = SessionLocal()
+    try:
+        order = db.query(Order).filter(Order.id == order_id).first()
+        if order and order.status == "Processing":
+            order.status = "Order Placed"
+            db.commit()
+    finally:
+        db.close()
+
 @router.post("/", response_model=OrderOut)
-def create_order(order_in: OrderCreate, db: Session = Depends(get_db)):
+def create_order(order_in: OrderCreate, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
     # Get cart items for the user
     cart_items = db.query(CartItem).filter(CartItem.user_id == DEFAULT_USER_ID).all()
     
@@ -48,6 +61,9 @@ def create_order(order_in: OrderCreate, db: Session = Depends(get_db)):
     
     db.commit()
     db.refresh(new_order)
+    
+    # Simulate order lifecycle in background
+    background_tasks.add_task(update_order_status_task, new_order.id)
     
     return new_order
 

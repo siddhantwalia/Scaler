@@ -70,11 +70,11 @@ const ProductCard = ({ product }: ProductCardProps) => {
         <Heart className={`h-[20px] w-[20px] transition-colors ${wishlisted ? "fill-[#ff4343] text-[#ff4343]" : "text-[#c2c2c2] hover:text-[#7f7f7f]"}`} />
       </button>
 
-      <div className="relative aspect-[1] w-full bg-white p-4 flex flex-col items-center justify-center overflow-hidden">
+      <div className="relative h-[220px] w-full bg-white p-4 flex flex-col items-center justify-center overflow-hidden">
         <img
           src={product.images[0]}
           alt={product.name}
-          className="max-h-[90%] max-w-[90%] object-contain group-hover:scale-[1.05] transition-transform duration-300"
+          className="h-full w-full object-contain group-hover:scale-[1.05] transition-transform duration-300"
           loading="lazy"
         />
       </div>

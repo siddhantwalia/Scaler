@@ -20,6 +20,7 @@ class ProductBase(BaseModel):
     rating: Optional[float] = 0.0
     reviews_count: Optional[int] = 0
     highlights: Optional[List[str]] = None
+    specs: Optional[dict] = None
 
 # Schema for products
 class ProductOut(ProductBase):

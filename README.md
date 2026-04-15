@@ -21,10 +21,10 @@ A fully functional, high-fidelity e-commerce web application that closely replic
 
 ### Core Features (Must Have) - **COMPLETED**
 - **Product Listing Page**: High-density grid layout matching Flipkart's design, filtering by category, search functionality, and highly accurate product cards.
-- **Product Detail Page**: Image gallery/thumbnails, rich descriptions, "Highlights" specifications, price & discount sections, and action buttons.
+- **Product Detail Page**: Image gallery/thumbnails, rich descriptions, **Icon-based Highlights Specifications**, detailed **Technical Specifications Table**, price & discount sections, and action buttons.
 - **Shopping Cart**: View items, update quantity (+/-), remove items, and view a detailed price breakdown matching Flipkart's UX.
-- **Order Placement**: Checkout flow, shipping address form, order summary, and order confirmation displaying the Order ID.
-- **Database Design**: Fully relational SQLAlchemy schema covering Products, Images, Users, Cart, Wishlist, and Orders.
+- **Order Placement**: Checkout flow, shipping address form, order summary, and real-time **Order Status Lifecycle** simulation.
+- **Database Design**: Fully relational SQLAlchemy schema covering Products, Images, Users, Cart, Wishlist, and Orders, including **Dynamic JSON fields** for technical specs.
 
 ### Bonus Features (Good to Have) - **COMPLETED**
 - **Responsive Design**: Tailored experiences for Mobile, Tablet, and Desktop using Tailwind breakpoints.
@@ -38,11 +38,11 @@ A fully functional, high-fidelity e-commerce web application that closely replic
 ##  Database Design
 
 The schema is heavily normalized to mirror real e-commerce data structures:
-1. **Products**: `id`, `name`, `description`, `price`, `original_price`, `discount_percentage`, `category`, `stock`, `rating`, `reviews_count`, `highlights` (JSON).
-2. **ProductImage**: One-to-Many relationship with `Products`, allowing multiple image angles per product.
+1. **Products**: `id`, `name`, `description`, `price`, `original_price`, `discount_percentage`, `category`, `stock`, `rating`, `reviews_count`, `highlights` (JSON List), and `specs` (JSON Object).
+2. **ProductImage**: One-to-Many relationship with `Products`, allowing multiple image angles per product. Standardized to 400x400 square crops for layout uniformity.
 3. **CartItem**: Maps `user_id` to `product_id` with `quantity`. 
 4. **WishlistItem**: Maps `user_id` to favorite `product_id`.
-5. **Order**: Tracks `user_id`, `total_amount`, `shipping_address`, `status`, and timestamps.
+5. **Order**: Tracks `user_id`, `total_amount`, `shipping_address`, `status`, and timestamps. Includes a **Background Task** lifecycle (Processing -> Order Placed).
 6. **OrderItem**: One-to-Many with `Order`, caching the `price` and `quantity` at the time of purchase to prevent historical pricing bugs.
 
 ---
