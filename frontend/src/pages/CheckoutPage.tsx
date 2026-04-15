@@ -1,24 +1,48 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
+import { api } from "@/api/api";
 import { useCart } from "@/context/CartContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
 
 const CheckoutPage = () => {
-  const { items, subtotal, clearCart } = useCart();
+  const { items, subtotal } = useCart();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [form, setForm] = useState({ name: "", address: "", phone: "", pincode: "" });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const orderId = "FK" + Date.now().toString(36).toUpperCase();
-    clearCart();
-    navigate("/order-confirmation", { state: { orderId, items, subtotal, address: form } });
+    setIsSubmitting(true);
+    
+    try {
+        const fullAddress = `${form.name}, ${form.address}, ${form.pincode}. Phone: ${form.phone}`;
+        const order = await api.createOrder(fullAddress);
+        
+        queryClient.invalidateQueries({ queryKey: ["cart"] });
+        
+        navigate("/order-confirmation", { 
+            state: { 
+                orderId: order.id, 
+                items, 
+                subtotal, 
+                address: form 
+            } 
+        });
+        toast.success("Order placed successfully!");
+    } catch (error) {
+        toast.error("Failed to place order. Please try again.");
+    } finally {
+        setIsSubmitting(false);
+    }
   };
 
   if (items.length === 0) {
@@ -52,8 +76,8 @@ const CheckoutPage = () => {
             </div>
           </div>
           <div className="px-4 py-3 border-t border-border flex justify-end">
-            <Button type="submit" className="bg-secondary text-secondary-foreground hover:bg-secondary/90 font-semibold px-8">
-              PLACE ORDER
+            <Button disabled={isSubmitting} type="submit" className="bg-secondary text-secondary-foreground hover:bg-secondary/90 font-semibold px-8">
+              {isSubmitting ? "PLACING ORDER..." : "PLACE ORDER"}
             </Button>
           </div>
         </form>

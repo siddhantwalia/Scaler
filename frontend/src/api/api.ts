@@ -114,5 +114,21 @@ export const api = {
             method: 'DELETE'
         });
         if (!res.ok) throw new Error('Failed to clear cart');
+    },
+
+    async createOrder(shippingAddress: string): Promise<any> {
+        const res = await fetch(`${API_BASE_URL}/orders/`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ shipping_address: shippingAddress })
+        });
+        if (!res.ok) throw new Error('Failed to place order');
+        return await res.json();
+    },
+
+    async getOrders(): Promise<any[]> {
+        const res = await fetch(`${API_BASE_URL}/orders/`);
+        if (!res.ok) throw new Error('Failed to fetch orders');
+        return await res.json();
     }
 };
