@@ -30,7 +30,6 @@ const WishlistPage = () => {
 
       setItems(prev => prev.filter(p => p.id !== product.id));
 
-      // 🔥 ADD THIS
       window.dispatchEvent(new Event("wishlistUpdated"));
 
     } catch {

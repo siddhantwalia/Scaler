@@ -4,32 +4,70 @@ import StarRating from "./StarRating";
 import { api } from "@/api/api";
 import { toast } from "sonner";
 import { Heart } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
 
 interface ProductCardProps {
   product: Product;
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
+  const [wishlisted, setWishlisted] = useState(false);
+  const isUpdating = useRef(false);
+
+  useEffect(() => {
+    const syncWishlist = () => {
+      if (isUpdating.current) return;
+      api.getWishlist().then((items) => {
+        setWishlisted(items.some((item: any) => item.id === product.id));
+      }).catch(() => {});
+    };
+
+    syncWishlist();
+    window.addEventListener("wishlistUpdated", syncWishlist);
+    return () => window.removeEventListener("wishlistUpdated", syncWishlist);
+  }, [product.id]);
+
+  const handleWishlistToggle = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Optimistic Update
+    const previousState = wishlisted;
+    setWishlisted(!previousState);
+    isUpdating.current = true;
+
+    try {
+      if (previousState) {
+        await api.removeFromWishlist(product.id);
+        toast.success("Removed from wishlist");
+      } else {
+        await api.addToWishlist(product.id);
+        toast.success("Added to wishlist");
+      }
+      
+      // Delay dispatch slightly to give DB time to settle
+      setTimeout(() => {
+        window.dispatchEvent(new Event("wishlistUpdated"));
+        isUpdating.current = false;
+      }, 500);
+      
+    } catch {
+      setWishlisted(previousState);
+      isUpdating.current = false;
+      toast.error("Failed to update wishlist");
+    }
+  };
+
   return (
     <Link
       to={`/product/${product.id}`}
       className="group bg-white hover:shadow-[0_2px_8px_0_rgba(0,0,0,0.1)] transition-shadow duration-300 flex flex-col overflow-hidden relative"
     >
       <button
-        onClick={async (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          try {
-            await api.addToWishlist(product.id);
-            toast.success("Added to wishlist");
-            window.dispatchEvent(new Event("wishlistUpdated"));
-          } catch {
-            toast.error("Failed to add to wishlist");
-          }
-        }}
+        onClick={handleWishlistToggle}
         className="absolute top-2 right-2 z-10 p-2 hover:scale-110 transition"
       >
-        <Heart className="h-[20px] w-[20px] text-[#c2c2c2] hover:text-[#ff4343] hover:fill-[#ff4343] transition-colors" />
+        <Heart className={`h-[20px] w-[20px] transition-colors ${wishlisted ? "fill-[#ff4343] text-[#ff4343]" : "text-[#c2c2c2] hover:text-[#7f7f7f]"}`} />
       </button>
 
       <div className="relative aspect-[1] w-full bg-white p-4 flex flex-col items-center justify-center overflow-hidden">

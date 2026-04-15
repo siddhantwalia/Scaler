@@ -24,11 +24,17 @@ const ProductDetail = () => {
 
   // Check wishlist status
   useEffect(() => {
-    if (product) {
-      api.getWishlist().then((items) => {
-        setWishlisted(items.some((p: any) => p.id === product.id));
-      });
-    }
+    const syncWishlist = () => {
+      if (product) {
+        api.getWishlist().then((items) => {
+          setWishlisted(items.some((p: any) => p.id === product.id));
+        });
+      }
+    };
+
+    syncWishlist();
+    window.addEventListener("wishlistUpdated", syncWishlist);
+    return () => window.removeEventListener("wishlistUpdated", syncWishlist);
   }, [product]);
 
   // Handlers
@@ -56,21 +62,21 @@ const ProductDetail = () => {
   };
 
   const handleWishlistToggle = async () => {
+    // Optimistic update
+    const previousState = wishlisted;
+    setWishlisted(!previousState);
+
     try {
-      if (wishlisted) {
+      if (previousState) {
         await api.removeFromWishlist(product.id);
-        setWishlisted(false);
         toast.success("Removed from wishlist");
       } else {
         await api.addToWishlist(product.id);
-        setWishlisted(true);
         toast.success("Added to wishlist");
       }
-
-      // 🔥 ADD THIS
       window.dispatchEvent(new Event("wishlistUpdated"));
-
     } catch {
+      setWishlisted(previousState);
       toast.error("Something went wrong");
     }
   };
@@ -107,12 +113,12 @@ const ProductDetail = () => {
   return (
     <main className="container mx-auto px-4 py-6">
       <div className="bg-card rounded-sm flipkart-shadow p-4 md:p-8">
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid lg:grid-cols-2 gap-8">
 
           {/* Image and Primary Actions Column */}
-          <div className="flex flex-col md:flex-row gap-4 items-start sticky top-24">
+          <div className="flex flex-col lg:flex-row gap-4 items-start lg:sticky lg:top-24">
             {/* Side Thumbnails (Desktop Only) */}
-            <div className="hidden md:flex flex-col gap-2 w-16 shrink-0">
+            <div className="hidden lg:flex flex-col gap-2 w-16 shrink-0">
               {product.images.map((img: string, idx: number) => (
                 <button
                   key={idx}
