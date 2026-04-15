@@ -1,10 +1,7 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
-import { Product } from "@/data/products";
-
-export interface CartItem {
-  product: Product;
-  quantity: number;
-}
+import React, { createContext, useContext, useCallback, useMemo } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { api, Product, CartItem } from "@/api/api";
+import { toast } from "sonner";
 
 interface CartContextType {
   items: CartItem[];
@@ -14,50 +11,76 @@ interface CartContextType {
   clearCart: () => void;
   totalItems: number;
   subtotal: number;
+  isLoading: boolean;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [items, setItems] = useState<CartItem[]>(() => {
-    try {
-      const saved = localStorage.getItem("flipkart-cart");
-      return saved ? JSON.parse(saved) : [];
-    } catch {
-      return [];
-    }
+  const queryClient = useQueryClient();
+
+  const { data: cartData, isLoading } = useQuery({
+    queryKey: ["cart"],
+    queryFn: () => api.getCart(),
   });
 
-  useEffect(() => {
-    localStorage.setItem("flipkart-cart", JSON.stringify(items));
-  }, [items]);
+  const addItemMutation = useMutation({
+    mutationFn: (productId: number) => api.addToCart(productId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
+    },
+  });
+
+  const updateItemMutation = useMutation({
+    mutationFn: ({ id, quantity }: { id: number; quantity: number }) => api.updateCartItem(id, quantity),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
+    },
+  });
+
+  const removeItemMutation = useMutation({
+    mutationFn: (id: number) => api.removeFromCart(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
+    },
+  });
+
+  const clearCartMutation = useMutation({
+    mutationFn: () => api.clearCart(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
+    },
+  });
+
+  const items = cartData?.items || [];
 
   const addToCart = useCallback((product: Product) => {
-    setItems((prev) => {
-      const existing = prev.find((i) => i.product.id === product.id);
-      if (existing) {
-        return prev.map((i) => i.product.id === product.id ? { ...i, quantity: i.quantity + 1 } : i);
-      }
-      return [...prev, { product, quantity: 1 }];
-    });
-  }, []);
+    addItemMutation.mutate(product.id);
+  }, [addItemMutation]);
 
   const removeFromCart = useCallback((productId: number) => {
-    setItems((prev) => prev.filter((i) => i.product.id !== productId));
-  }, []);
+    const item = items.find((i) => i.product.id === productId);
+    if (item) {
+      removeItemMutation.mutate(item.id);
+    }
+  }, [items, removeItemMutation]);
 
   const updateQuantity = useCallback((productId: number, quantity: number) => {
-    if (quantity < 1) return;
-    setItems((prev) => prev.map((i) => i.product.id === productId ? { ...i, quantity } : i));
-  }, []);
+    const item = items.find((i) => i.product.id === productId);
+    if (item) {
+      updateItemMutation.mutate({ id: item.id, quantity });
+    }
+  }, [items, updateItemMutation]);
 
-  const clearCart = useCallback(() => setItems([]), []);
+  const clearCart = useCallback(() => {
+    clearCartMutation.mutate();
+  }, [clearCartMutation]);
 
-  const totalItems = items.reduce((sum, i) => sum + i.quantity, 0);
-  const subtotal = items.reduce((sum, i) => sum + i.product.price * i.quantity, 0);
+  const totalItems = cartData?.total_items || 0;
+  const subtotal = cartData?.total_price || 0;
 
   return (
-    <CartContext.Provider value={{ items, addToCart, removeFromCart, updateQuantity, clearCart, totalItems, subtotal }}>
+    <CartContext.Provider value={{ items, addToCart, removeFromCart, updateQuantity, clearCart, totalItems, subtotal, isLoading }}>
       {children}
     </CartContext.Provider>
   );
