@@ -43,12 +43,16 @@ def add_to_wishlist(wishlist_in: WishlistItemCreate, db: Session = Depends(get_d
     db.refresh(new_item)
     return new_item
 
-@router.delete("/{item_id}")
-def remove_from_wishlist(item_id: int, db: Session = Depends(get_db)):
-    item = db.query(WishlistItem).filter(WishlistItem.id == item_id, WishlistItem.user_id == DEFAULT_USER_ID).first()
+@router.delete("/{product_id}")
+def remove_from_wishlist(product_id: int, db: Session = Depends(get_db)):
+    item = db.query(WishlistItem).filter(
+        WishlistItem.product_id == product_id,
+        WishlistItem.user_id == DEFAULT_USER_ID
+    ).first()
+
     if not item:
         raise HTTPException(status_code=404, detail="Wishlist item not found")
-    
+
     db.delete(item)
     db.commit()
     return {"message": "Item removed from wishlist"}

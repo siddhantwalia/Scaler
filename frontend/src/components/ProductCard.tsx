@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
 import { Product } from "@/api/api";
 import StarRating from "./StarRating";
+import { api } from "@/api/api";
+import { toast } from "sonner";
+import { Heart } from "lucide-react";
 
 interface ProductCardProps {
   product: Product;
@@ -13,6 +16,26 @@ const ProductCard = ({ product }: ProductCardProps) => {
       className="group bg-card rounded-sm flipkart-shadow hover:flipkart-shadow-hover transition-all duration-200 flex flex-col overflow-hidden border border-border/50"
     >
       <div className="relative aspect-square bg-card p-4 flex items-center justify-center overflow-hidden">
+        <button
+          onClick={async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            try {
+              await api.addToWishlist(product.id);
+              toast.success("Added to wishlist");
+              
+              window.dispatchEvent(new Event("wishlistUpdated"));
+
+            } catch {
+              toast.error("Failed to add to wishlist");
+            }
+          }}
+          className="absolute top-2 right-2 bg-white p-1.5 rounded-full shadow hover:scale-110 transition"
+        >
+          <Heart className="h-5 w-5 text-gray-600" />
+        </button>
+
         <img
           src={product.images[0]}
           alt={product.name}

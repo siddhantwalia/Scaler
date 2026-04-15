@@ -1,18 +1,40 @@
-import { Link, useNavigate } from "react-router-dom";
-import { Search, ShoppingCart, User, Menu } from "lucide-react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Search, ShoppingCart, User, Menu, Heart, Package } from "lucide-react";
 import { useCart } from "@/context/CartContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { api } from "@/api/api";
 
 const Navbar = () => {
   const { totalItems } = useCart();
+  const [wishlistCount, setWishlistCount] = useState(0);
   const [search, setSearch] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     navigate(`/?search=${encodeURIComponent(search)}`);
   };
+
+  // Fetch wishlist count from backend
+  useEffect(() => {
+    const fetchWishlistCount = () => {
+      api.getWishlist()
+        .then((data) => setWishlistCount(data.length))
+        .catch(() => { });
+    };
+
+    // initial load
+    fetchWishlistCount();
+    window.addEventListener("wishlistUpdated", fetchWishlistCount);
+
+    // cleanup
+    return () => {
+      window.removeEventListener("wishlistUpdated", fetchWishlistCount);
+    };
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 bg-nav text-primary-foreground flipkart-shadow">
@@ -44,6 +66,7 @@ const Navbar = () => {
 
           {/* Right actions */}
           <div className="flex items-center gap-1 ml-auto">
+            {/* Login */}
             <Link
               to="/"
               className="hidden md:flex items-center gap-1.5 px-4 py-2 rounded-sm text-sm font-medium hover:bg-nav-secondary transition-colors"
@@ -51,6 +74,30 @@ const Navbar = () => {
               <User className="h-4 w-4" />
               Login
             </Link>
+            {/* Wishlist */}
+            <Link
+              to="/wishlist"
+              className="relative hidden md:flex items-center gap-1.5 px-4 py-2 rounded-sm text-sm font-medium hover:bg-nav-secondary transition-colors"
+            >
+              <Heart className="h-4 w-4" />
+              Wishlist
+              {wishlistCount > 0 && (
+                <span className="absolute -top-0.5 left-5 bg-secondary text-secondary-foreground text-[10px] font-bold rounded-full h-4 min-w-[16px] flex items-center justify-center px-1">
+                  {wishlistCount}
+                </span>
+              )}
+            </Link>
+
+            {/* Orders */}
+            <Link
+              to="/orders"
+              className="hidden md:flex items-center gap-1.5 px-4 py-2 rounded-sm text-sm font-medium hover:bg-nav-secondary transition-colors"
+            >
+              <Package className="h-4 w-4" />
+              Orders
+            </Link>
+
+            {/* Cart */}
             <Link
               to="/cart"
               className="relative flex items-center gap-1.5 px-4 py-2 rounded-sm text-sm font-medium hover:bg-nav-secondary transition-colors"
@@ -63,13 +110,14 @@ const Navbar = () => {
                 </span>
               )}
             </Link>
-            <Link
-              to="/orders"
-              className="flex items-center gap-1.5 px-4 py-2 rounded-sm text-sm font-medium hover:bg-nav-secondary transition-colors"
+
+            {/* Mobile menu */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="sm:hidden p-2 hover:bg-nav-secondary rounded-sm transition-colors"
             >
-              <User className="h-4 w-4" />
-              <span className="hidden md:inline">Orders</span>
-            </Link>
+              <Menu className="h-5 w-5" />
+            </button>
           </div>
         </div>
 

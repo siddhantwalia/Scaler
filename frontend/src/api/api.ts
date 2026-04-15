@@ -130,5 +130,25 @@ export const api = {
         const res = await fetch(`${API_BASE_URL}/orders/`);
         if (!res.ok) throw new Error('Failed to fetch orders');
         return await res.json();
+    },
+    async getWishlist() {
+        const res = await fetch(`${API_BASE_URL}/wishlist/`);
+        if (!res.ok) throw new Error("Failed to fetch wishlist");
+        const data = await res.json();
+        return data.map((item: any) => mapProduct(item.product));
+    },
+
+    async addToWishlist(productId: number) {
+        await fetch(`${API_BASE_URL}/wishlist/`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ product_id: productId }),
+        });
+    },
+
+    async removeFromWishlist(productId: number) {
+        await fetch(`${API_BASE_URL}/wishlist/${productId}`, {
+            method: "DELETE",
+        });
     }
 };
