@@ -1,0 +1,227 @@
+export interface Product {
+  id: number;
+  name: string;
+  price: number;
+  originalPrice: number;
+  discount: number;
+  rating: number;
+  ratingCount: number;
+  category: string;
+  images: string[];
+  description: string;
+  specs: Record<string, string>;
+  inStock: boolean;
+}
+
+export const categories = [
+  "All",
+  "Electronics",
+  "Mobiles",
+  "Fashion",
+  "Home & Furniture",
+  "Appliances",
+  "Books",
+  "Toys",
+];
+
+export const products: Product[] = [
+  {
+    id: 1,
+    name: "Samsung Galaxy S24 Ultra 5G (Titanium Black, 256 GB)",
+    price: 129999,
+    originalPrice: 144999,
+    discount: 10,
+    rating: 4.5,
+    ratingCount: 12453,
+    category: "Mobiles",
+    images: [
+      "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=400&h=400&fit=crop",
+    ],
+    description: "Experience the ultimate Galaxy with the new Samsung Galaxy S24 Ultra featuring a stunning 6.8-inch display, 200MP camera, and S Pen.",
+    specs: { Display: "6.8 inch AMOLED", Processor: "Snapdragon 8 Gen 3", RAM: "12 GB", Storage: "256 GB", Battery: "5000 mAh", Camera: "200MP + 12MP + 50MP + 10MP" },
+    inStock: true,
+  },
+  {
+    id: 2,
+    name: "Apple MacBook Air M3 Chip Laptop (16 GB, 256 GB SSD)",
+    price: 114990,
+    originalPrice: 119900,
+    discount: 4,
+    rating: 4.7,
+    ratingCount: 3421,
+    category: "Electronics",
+    images: [
+      "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&h=400&fit=crop",
+    ],
+    description: "The remarkably thin MacBook Air with M3 chip delivers exceptional performance and up to 18 hours of battery life.",
+    specs: { Display: "13.6 inch Liquid Retina", Processor: "Apple M3", RAM: "16 GB", Storage: "256 GB SSD", Battery: "Up to 18 hours", Weight: "1.24 kg" },
+    inStock: true,
+  },
+  {
+    id: 3,
+    name: "Sony WH-1000XM5 Wireless Noise Cancelling Headphones",
+    price: 24990,
+    originalPrice: 34990,
+    discount: 29,
+    rating: 4.6,
+    ratingCount: 8932,
+    category: "Electronics",
+    images: [
+      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1484704849700-f032a568e944?w=400&h=400&fit=crop",
+    ],
+    description: "Industry-leading noise cancellation with Auto NC Optimizer. Exceptional sound quality with 30mm drivers.",
+    specs: { Type: "Over-ear", "Noise Cancellation": "Yes", "Battery Life": "30 hours", Connectivity: "Bluetooth 5.2", Weight: "250g" },
+    inStock: true,
+  },
+  {
+    id: 4,
+    name: "Nike Air Max 270 React Running Shoes For Men",
+    price: 8995,
+    originalPrice: 14995,
+    discount: 40,
+    rating: 4.3,
+    ratingCount: 5621,
+    category: "Fashion",
+    images: [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=400&fit=crop",
+    ],
+    description: "The Nike Air Max 270 React combines two of Nike's best technologies for an unbelievably soft and comfortable ride.",
+    specs: { Type: "Running Shoes", Material: "Mesh/Synthetic", Sole: "Rubber", Closure: "Lace-Ups" },
+    inStock: true,
+  },
+  {
+    id: 5,
+    name: "Wooden Study Table with Drawer - Walnut Finish",
+    price: 5999,
+    originalPrice: 12999,
+    discount: 54,
+    rating: 4.1,
+    ratingCount: 2341,
+    category: "Home & Furniture",
+    images: [
+      "https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1611269154421-4e27233ac5c7?w=400&h=400&fit=crop",
+    ],
+    description: "Elegant wooden study table with spacious drawer, perfect for home office or study room.",
+    specs: { Material: "Engineered Wood", Dimensions: "120x60x75 cm", Color: "Walnut", "Weight Capacity": "50 kg" },
+    inStock: true,
+  },
+  {
+    id: 6,
+    name: "Samsung 253L Frost Free Double Door Refrigerator",
+    price: 24990,
+    originalPrice: 30990,
+    discount: 19,
+    rating: 4.4,
+    ratingCount: 7654,
+    category: "Appliances",
+    images: [
+      "https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?w=400&h=400&fit=crop",
+    ],
+    description: "Digital inverter technology for energy efficiency. Convertible 5-in-1 modes for flexible storage.",
+    specs: { Capacity: "253 Litres", Type: "Frost Free", "Energy Rating": "3 Star", Compressor: "Digital Inverter" },
+    inStock: false,
+  },
+  {
+    id: 7,
+    name: "The Psychology of Money - Morgan Housel (Paperback)",
+    price: 299,
+    originalPrice: 399,
+    discount: 25,
+    rating: 4.6,
+    ratingCount: 45231,
+    category: "Books",
+    images: [
+      "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=400&h=400&fit=crop",
+    ],
+    description: "Timeless lessons on wealth, greed, and happiness doing well with money isn't about what you know.",
+    specs: { Author: "Morgan Housel", Pages: "256", Language: "English", Publisher: "Jaico Publishing" },
+    inStock: true,
+  },
+  {
+    id: 8,
+    name: "LEGO Classic Creative Bricks Box (484 Pieces)",
+    price: 1999,
+    originalPrice: 2999,
+    discount: 33,
+    rating: 4.8,
+    ratingCount: 3210,
+    category: "Toys",
+    images: [
+      "https://images.unsplash.com/photo-1587654780291-39c9404d7dd0?w=400&h=400&fit=crop",
+    ],
+    description: "Spark creativity with this LEGO Classic set featuring 484 colorful bricks in 35 different colors.",
+    specs: { "Piece Count": "484", "Age Group": "4+", Material: "ABS Plastic", "Box Size": "37x26x18 cm" },
+    inStock: true,
+  },
+  {
+    id: 9,
+    name: "iPhone 15 Pro Max (Natural Titanium, 256 GB)",
+    price: 159900,
+    originalPrice: 159900,
+    discount: 0,
+    rating: 4.6,
+    ratingCount: 9821,
+    category: "Mobiles",
+    images: [
+      "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=400&h=400&fit=crop",
+    ],
+    description: "iPhone 15 Pro Max with A17 Pro chip, titanium design, and the most powerful iPhone camera system ever.",
+    specs: { Display: "6.7 inch Super Retina XDR", Processor: "A17 Pro", RAM: "8 GB", Storage: "256 GB", Battery: "4441 mAh", Camera: "48MP + 12MP + 12MP" },
+    inStock: true,
+  },
+  {
+    id: 10,
+    name: "boAt Airdopes 141 TWS Earbuds with 42H Playtime",
+    price: 1099,
+    originalPrice: 4490,
+    discount: 76,
+    rating: 4.1,
+    ratingCount: 234567,
+    category: "Electronics",
+    images: [
+      "https://images.unsplash.com/photo-1590658268037-6bf12f032f55?w=400&h=400&fit=crop",
+    ],
+    description: "Immersive sound experience with 8mm drivers. IPX4 water resistance. Low latency mode for gaming.",
+    specs: { Type: "TWS Earbuds", "Battery Life": "42 hours total", Connectivity: "Bluetooth 5.1", "Water Resistance": "IPX4" },
+    inStock: true,
+  },
+  {
+    id: 11,
+    name: "Levi's Men's 511 Slim Fit Jeans - Dark Blue",
+    price: 1799,
+    originalPrice: 3599,
+    discount: 50,
+    rating: 4.2,
+    ratingCount: 12345,
+    category: "Fashion",
+    images: [
+      "https://images.unsplash.com/photo-1542272454315-4c01d7abdf4a?w=400&h=400&fit=crop",
+    ],
+    description: "Classic 511 slim fit jeans in dark blue wash. Made with stretch denim for extra comfort.",
+    specs: { Fit: "Slim", Material: "Cotton Blend", Rise: "Mid Rise", Closure: "Zip" },
+    inStock: true,
+  },
+  {
+    id: 12,
+    name: "Prestige Iris 750W Mixer Grinder (3 Jars)",
+    price: 2499,
+    originalPrice: 4195,
+    discount: 40,
+    rating: 4.3,
+    ratingCount: 8765,
+    category: "Appliances",
+    images: [
+      "https://images.unsplash.com/photo-1585515320310-259814833e62?w=400&h=400&fit=crop",
+    ],
+    description: "Powerful 750W motor with 3 stainless steel jars for all your grinding and mixing needs.",
+    specs: { Power: "750W", Jars: "3", Material: "Stainless Steel", Speed: "3 Speed + Pulse" },
+    inStock: true,
+  },
+];

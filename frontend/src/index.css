@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 96%;
+    --foreground: 220 20% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 20% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 20% 10%;
+
+    --primary: 217 89% 51%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 40 100% 50%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 220 14% 92%;
+    --muted-foreground: 220 10% 46%;
+
+    --accent: 217 89% 95%;
+    --accent-foreground: 217 89% 35%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 13% 88%;
+    --input: 220 13% 88%;
+    --ring: 217 89% 51%;
+
+    --radius: 0.25rem;
+
+    --nav-bg: 217 89% 51%;
+    --nav-secondary: 217 89% 42%;
+    --badge-discount: 120 60% 40%;
+    --badge-discount-foreground: 0 0% 100%;
+    --star: 45 100% 51%;
+    --star-empty: 220 10% 80%;
+    --success: 142 71% 45%;
+    --success-foreground: 0 0% 100%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Roboto', 'Segoe UI', sans-serif;
+  }
+}
+
+@layer components {
+  .flipkart-shadow {
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.08);
+  }
+  .flipkart-shadow-hover {
+    box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.12);
+  }
+}
