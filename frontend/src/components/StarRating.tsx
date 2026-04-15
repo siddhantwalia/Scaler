@@ -12,12 +12,12 @@ const StarRating = ({ rating, count, size = "sm" }: StarRatingProps) => {
 
   return (
     <div className="flex items-center gap-1">
-      <span className={`inline-flex items-center gap-0.5 bg-discount text-discount-foreground px-1.5 py-0.5 rounded-sm ${textSize} font-semibold`}>
+      <span className={`inline-flex items-center gap-0.5 bg-[#388e3c] text-white px-1.5 py-[2px] rounded-[3px] text-[12px] font-bold`}>
         {rating}
-        <Star className={`${starSize} fill-current`} />
+        <Star className={`h-[10px] w-[10px] fill-current`} />
       </span>
       {count !== undefined && (
-        <span className={`text-muted-foreground ${textSize}`}>
+        <span className={`text-[#878787] font-medium text-[12px]`}>
           ({count.toLocaleString()})
         </span>
       )}

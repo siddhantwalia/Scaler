@@ -2,6 +2,8 @@ import { useCart } from "@/context/CartContext";
 import { Link, useNavigate } from "react-router-dom";
 import { Minus, Plus, Trash2, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { api } from "@/api/api";
+import { toast } from "sonner";
 
 const CartPage = () => {
   const { items, removeFromCart, updateQuantity, subtotal } = useCart();
@@ -21,64 +23,97 @@ const CartPage = () => {
   }
 
   return (
-    <main className="container mx-auto px-4 py-4">
-      <div className="grid lg:grid-cols-3 gap-4">
+    <main className="container mx-auto px-4 py-4 max-w-6xl">
+      <div className="grid lg:grid-cols-3 gap-4 items-start">
         {/* Cart items */}
         <div className="lg:col-span-2 bg-card rounded-sm flipkart-shadow">
-          <div className="px-4 py-3 border-b border-border">
+          <div className="px-6 py-4 border-b border-border">
             <h1 className="text-lg font-semibold text-foreground">
-              My Cart ({items.reduce((s, i) => s + i.quantity, 0)})
+              Flipkart ({items.reduce((s, i) => s + i.quantity, 0)})
             </h1>
           </div>
           <div className="divide-y divide-border">
             {items.map(({ product, quantity }) => (
-              <div key={product.id} className="p-4 flex gap-4">
-                <Link to={`/product/${product.id}`} className="w-24 h-24 flex-shrink-0">
-                  <img src={product.images[0]} alt={product.name} className="w-full h-full object-contain" />
-                </Link>
-                <div className="flex-1 min-w-0">
-                  <Link to={`/product/${product.id}`} className="text-sm font-medium text-foreground hover:text-primary line-clamp-2">
-                    {product.name}
+              <div key={product.id} className="p-6 flex flex-col sm:flex-row gap-6">
+                <div className="flex flex-col items-center gap-4">
+                  <Link to={`/product/${product.id}`} className="w-28 h-28 flex-shrink-0">
+                    <img src={product.images[0]} alt={product.name} className="w-full h-full object-contain" />
                   </Link>
-                  <div className="flex items-baseline gap-2 mt-1">
-                    <span className="text-base font-bold text-foreground">₹{product.price.toLocaleString()}</span>
+                  <div className="flex items-center border border-border rounded-sm overflow-hidden">
+                    <button
+                      onClick={() => updateQuantity(product.id, quantity - 1)}
+                      disabled={quantity <= 1}
+                      className="w-7 h-7 flex items-center justify-center hover:bg-muted disabled:opacity-30 transition-colors border-r"
+                    >
+                      <Minus className="h-3 w-3" />
+                    </button>
+                    <input 
+                      type="text" 
+                      readOnly 
+                      value={quantity} 
+                      className="w-10 h-7 text-center text-sm font-bold bg-transparent outline-none"
+                    />
+                    <button
+                      onClick={() => updateQuantity(product.id, quantity + 1)}
+                      className="w-7 h-7 flex items-center justify-center hover:bg-muted transition-colors border-l"
+                    >
+                      <Plus className="h-3 w-3" />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="flex-1 min-w-0 space-y-2">
+                  <div className="space-y-1">
+                    <Link to={`/product/${product.id}`} className="text-base font-normal text-foreground hover:text-primary line-clamp-1">
+                      {product.name}
+                    </Link>
+                    <p className="text-xs text-muted-foreground">Seller: Scaler Retail</p>
+                  </div>
+                  
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg font-bold text-foreground">₹{product.price.toLocaleString()}</span>
                     {product.discount > 0 && (
-                      <span className="text-xs text-muted-foreground line-through">₹{product.originalPrice.toLocaleString()}</span>
+                      <>
+                        <span className="text-sm text-muted-foreground line-through">₹{product.originalPrice.toLocaleString()}</span>
+                        <span className="text-sm text-success font-semibold">{product.discount}% Off</span>
+                      </>
                     )}
                   </div>
-                  <div className="flex items-center gap-3 mt-3">
-                    <div className="flex items-center border border-border rounded-full overflow-hidden">
-                      <button
-                        onClick={() => updateQuantity(product.id, quantity - 1)}
-                        disabled={quantity <= 1}
-                        className="p-1.5 hover:bg-muted disabled:opacity-40 transition-colors"
-                      >
-                        <Minus className="h-3.5 w-3.5" />
-                      </button>
-                      <span className="px-3 text-sm font-semibold border-x border-border bg-muted/30">{quantity}</span>
-                      <button
-                        onClick={() => updateQuantity(product.id, quantity + 1)}
-                        className="p-1.5 hover:bg-muted transition-colors"
-                      >
-                        <Plus className="h-3.5 w-3.5" />
-                      </button>
-                    </div>
+
+                  <div className="flex items-center gap-6 pt-2">
+                    <button
+                      onClick={async () => {
+                        try {
+                          await api.addToWishlist(product.id);
+                          removeFromCart(product.id);
+                          toast.success("Saved for later");
+                          window.dispatchEvent(new Event("wishlistUpdated"));
+                        } catch {
+                          toast.error("Failed to save for later");
+                        }
+                      }}
+                      className="text-sm font-bold text-foreground hover:text-primary uppercase transition-colors"
+                    >
+                      Save for later
+                    </button>
                     <button
                       onClick={() => removeFromCart(product.id)}
-                      className="text-xs font-semibold text-foreground/60 hover:text-destructive uppercase flex items-center gap-1 transition-colors"
+                      className="text-sm font-bold text-foreground hover:text-primary uppercase transition-colors"
                     >
-                      <Trash2 className="h-3.5 w-3.5" />
                       Remove
                     </button>
                   </div>
                 </div>
+                <div className="text-sm text-foreground/80">
+                  Delivery by Tomorrow, Thu | <span className="text-success font-medium">Free</span>
+                </div>
               </div>
             ))}
           </div>
-          <div className="px-4 py-3 border-t border-border flex justify-end">
+          <div className="px-6 py-4 border-t border-border flex justify-end sticky bottom-0 bg-card shadow-[0_-2px_10px_0_rgba(0,0,0,0.1)]">
             <Button
               onClick={() => navigate("/checkout")}
-              className="bg-secondary text-secondary-foreground hover:bg-secondary/90 font-semibold px-8"
+              className="bg-[#fb641b] hover:bg-[#fb641b]/90 text-white font-bold px-12 py-6 text-base rounded-sm"
             >
               PLACE ORDER
             </Button>
@@ -87,27 +122,30 @@ const CartPage = () => {
 
         {/* Price summary */}
         <div className="bg-card rounded-sm flipkart-shadow h-fit sticky top-20">
-          <div className="px-4 py-3 border-b border-border">
-            <h2 className="text-sm font-semibold text-muted-foreground uppercase">Price Details</h2>
+          <div className="px-6 py-3 border-b border-border">
+            <h2 className="text-base font-bold text-muted-foreground uppercase opacity-70">Price Details</h2>
           </div>
-          <div className="p-4 space-y-3 text-sm">
+          <div className="p-6 space-y-5 text-base">
             <div className="flex justify-between">
               <span className="text-foreground">Price ({items.length} items)</span>
               <span className="text-foreground">₹{items.reduce((s, i) => s + i.product.originalPrice * i.quantity, 0).toLocaleString()}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-foreground">Discount</span>
-              <span className="text-discount">
+              <span className="text-success">
                 − ₹{(items.reduce((s, i) => s + (i.product.originalPrice - i.product.price) * i.quantity, 0)).toLocaleString()}
               </span>
             </div>
             <div className="flex justify-between">
               <span className="text-foreground">Delivery Charges</span>
-              <span className="text-discount font-medium">FREE</span>
+              <span className="text-success font-medium">FREE</span>
             </div>
-            <div className="border-t border-dashed border-border pt-3 flex justify-between font-bold text-base">
+            <div className="border-t border-dashed border-border pt-4 flex justify-between font-bold text-lg">
               <span className="text-foreground">Total Amount</span>
               <span className="text-foreground">₹{subtotal.toLocaleString()}</span>
+            </div>
+            <div className="text-success font-bold text-sm tracking-tight border-t border-dashed border-border pt-4">
+              You will save ₹{(items.reduce((s, i) => s + (i.product.originalPrice - i.product.price) * i.quantity, 0)).toLocaleString()} on this order
             </div>
           </div>
         </div>

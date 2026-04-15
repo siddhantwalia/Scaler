@@ -13,6 +13,7 @@ export interface Product {
     description: string;
     specs: Record<string, string>;
     inStock: boolean;
+    stock: number;
 }
 
 export interface CartItem {
@@ -40,7 +41,8 @@ const mapProduct = (p: any): Product => ({
     images: p.images?.map((img: any) => img.image_url) || [],
     description: p.description || '',
     specs: p.highlights ? { "Highlights": p.highlights.join(", ") } : {},
-    inStock: p.stock > 0
+    inStock: p.stock > 0,
+    stock: p.stock || 0
 });
 
 

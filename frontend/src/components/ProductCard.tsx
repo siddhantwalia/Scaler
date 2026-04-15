@@ -13,63 +13,76 @@ const ProductCard = ({ product }: ProductCardProps) => {
   return (
     <Link
       to={`/product/${product.id}`}
-      className="group bg-card rounded-sm flipkart-shadow hover:flipkart-shadow-hover transition-all duration-200 flex flex-col overflow-hidden border border-border/50"
+      className="group bg-white hover:shadow-[0_2px_8px_0_rgba(0,0,0,0.1)] transition-shadow duration-300 flex flex-col overflow-hidden relative"
     >
-      <div className="relative aspect-square bg-card p-4 flex items-center justify-center overflow-hidden">
-        <button
-          onClick={async (e) => {
-            e.preventDefault();
-            e.stopPropagation();
+      <button
+        onClick={async (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          try {
+            await api.addToWishlist(product.id);
+            toast.success("Added to wishlist");
+            window.dispatchEvent(new Event("wishlistUpdated"));
+          } catch {
+            toast.error("Failed to add to wishlist");
+          }
+        }}
+        className="absolute top-2 right-2 z-10 p-2 hover:scale-110 transition"
+      >
+        <Heart className="h-[20px] w-[20px] text-[#c2c2c2] hover:text-[#ff4343] hover:fill-[#ff4343] transition-colors" />
+      </button>
 
-            try {
-              await api.addToWishlist(product.id);
-              toast.success("Added to wishlist");
-              
-              window.dispatchEvent(new Event("wishlistUpdated"));
-
-            } catch {
-              toast.error("Failed to add to wishlist");
-            }
-          }}
-          className="absolute top-2 right-2 bg-white p-1.5 rounded-full shadow hover:scale-110 transition"
-        >
-          <Heart className="h-5 w-5 text-gray-600" />
-        </button>
-
+      <div className="relative aspect-[1] w-full bg-white p-4 flex flex-col items-center justify-center overflow-hidden">
         <img
           src={product.images[0]}
           alt={product.name}
-          className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300"
+          className="max-h-[90%] max-w-[90%] object-contain group-hover:scale-[1.05] transition-transform duration-300"
           loading="lazy"
         />
-        {product.discount > 0 && (
-          <span className="absolute top-2 left-2 bg-discount text-discount-foreground text-[11px] font-bold px-2 py-0.5 rounded-sm">
-            {product.discount}% off
-          </span>
-        )}
       </div>
 
-      <div className="p-3 flex flex-col gap-1.5 flex-1">
-        <h3 className="text-sm text-foreground font-medium line-clamp-2 group-hover:text-primary transition-colors">
-          {product.name}
-        </h3>
+      <div className="px-5 pb-5 pt-2 flex flex-col gap-1.5 flex-1">
+        <div className="min-h-[40px]">
+          <h3 className="text-[14px] text-[#212121] font-normal line-clamp-2 group-hover:text-[#2874f0] transition-colors leading-[1.3]">
+            {product.name}
+          </h3>
+        </div>
 
-        <StarRating rating={product.rating} count={product.ratingCount} />
+        <div className="flex items-center gap-2 mt-0.5">
+          <StarRating rating={product.rating} count={product.ratingCount} />
+          <img 
+            src="https://static-assets-web.flixcart.com/fk-p-linchpin-web/fk-cp-zion/img/fa_62673a.png" 
+            alt="fassured" 
+            className="h-[18px] w-auto min-w-[50px] object-contain"
+          />
+        </div>
 
-        <div className="flex items-baseline gap-2 mt-auto">
-          <span className="text-base font-bold text-foreground">
-            ₹{product.price.toLocaleString()}
-          </span>
-          {product.discount > 0 && (
-            <>
-              <span className="text-xs text-muted-foreground line-through">
-                ₹{product.originalPrice.toLocaleString()}
-              </span>
-              <span className="text-xs text-discount font-semibold">
-                {product.discount}% off
-              </span>
-            </>
-          )}
+        <div className="flex flex-col mt-auto pt-1 gap-1">
+          <div className="flex items-baseline gap-2 flex-wrap">
+            <span className="text-[16px] font-bold text-[#212121]">
+              ₹{product.price.toLocaleString()}
+            </span>
+            {product.discount > 0 && (
+              <div className="flex items-baseline gap-2">
+                <span className="text-[13px] text-[#878787] line-through decoration-[#878787]">
+                  ₹{product.originalPrice.toLocaleString()}
+                </span>
+                <span className="text-[13px] text-[#388e3c] font-bold tracking-tight">
+                  {product.discount}% off
+                </span>
+              </div>
+            )}
+          </div>
+          <div className="flex justify-between items-center mt-[1px]">
+            <span className="text-[12px] text-[#212121]">
+              Free delivery
+            </span>
+            {product.stock === 0 ? (
+              <span className="text-[12px] text-red-500 font-medium">Out of stock</span>
+            ) : product.stock < 10 ? (
+              <span className="text-[11px] text-[#ff9f00] font-medium">Only {product.stock} left</span>
+            ) : null}
+          </div>
         </div>
       </div>
     </Link>
